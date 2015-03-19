@@ -7,17 +7,13 @@ RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 CMD ["/sbin/my_init"]
 ENV DEBIAN_FRONTEND noninteractive
 
-# Update software list
-RUN apt-get update
-
-# Install MySQL
-RUN apt-get install -yq mysql-server-5.5 pwgen
-
-# Remove cache
-RUN apt-get clean
-RUN rm -rf                                                              /var/lib/apt/lists/* \
-                                                                        /tmp/* \
-                                                                        /var/tmp/*
+# Update software list, install MySQL
+RUN apt-get update && \
+    apt-get install -yq mysql-server-5.5 pwgen && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* \
+           /tmp/* \
+           /var/tmp/*
 
 # Configure MySQL
 RUN rm -rf                                                              /var/lib/mysql/*
